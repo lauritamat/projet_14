@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Ma carte Saint-Valentin 💖</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "Georgia", serif;
+      background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+    .carte {
+      width: 350px;
+      height: 500px;
+      position: relative;
+      cursor: pointer;
+      transform-style: preserve-3d;
+      transition: transform 1s ease;
+    }
+    .carte.ouverte {
+      transform: rotateY(-180deg);
+    }
+    .face {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      backface-visibility: hidden;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+    }
+    .avant {
+      background: linear-gradient(45deg, #ff6b9d, #c44569);
+      color: white;
+    }
+    .arriere {
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      transform: rotateY(180deg);
+      color: white;
+    }
+    .coeur-grand {
+      font-size: 80px;
+      margin-bottom: 20px;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+    .petales {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.5s ease 0.5s;
+    }
+    .carte.ouverte .petales {
+      opacity: 1;
+    }
+    .petale {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: radial-gradient(circle, #ff69b4, #ff1493);
+      border-radius: 50% 0 50% 0;
+      animation: explode 3s ease-out forwards;
+    }
+    @keyframes explode {
+      0% {
+        transform: translate(0, 0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(var(--dx), var(--dy)) rotate(720deg);
+        opacity: 0;
+      }
+    }
+    h1 { font-size: 1.8rem; text-align: center; margin-bottom: 20px; }
+    p { text-align: center; line-height: 1.6; font-size: 1.1rem; }
+  </style>
+</head>
+<body>
+  <div class="carte" onclick="this.classList.toggle('ouverte')">
+    <div class="face avant">
+      <div class="coeur-grand">💖</div>
+      <h1>Pour toi ❤️</h1>
+      <p>Clique pour ouvrir<br>ta carte d'amour</p>
+    </div>
+    <div class="face arriere">
+      <h1>Je t'aime ! 💕</h1>
+      <p>Tu rends chaque jour plus beau.<br>
+      Tu es mon bonheur quotidien.<br>
+      Joyeuse Saint-Valentin !</p>
+    </div>
+    <div class="petales"></div>
+  </div>
+
+  <script>
+    function createPetales() {
+      const petalesContainer = document.querySelector(".petales");
+      for(let i = 0; i < 20; i++) {
+        const petale = document.createElement("div");
+        petale.className = "petale";
+        const angle = (i / 20) * Math.PI * 2;
+        const distance = 200 + Math.random() * 200;
+        petale.style.setProperty("--dx", Math.cos(angle) * distance + "px");
+        petale.style.setProperty("--dy", Math.sin(angle) * distance + "px");
+        petale.style.left = "50%";
+        petale.style.top = "50%";
+        petalesContainer.appendChild(petale);
+      }
+    }
+
+    document.querySelector(".carte").addEventListener("click", function() {
+      if (!this.classList.contains("ouverte")) {
+        createPetales();
+      }
+    });
+  </script>
+</body>
+</html>
